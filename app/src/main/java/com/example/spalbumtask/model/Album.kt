@@ -1,7 +1,11 @@
 package com.example.spalbumtask.model
 
-data class Album (
-        val userId: String,
-        val id: Int,
-        val title: String
-    )
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+
+/**
+ * Data class for holding Album details
+ */
+
+@Entity
+data class Album (val userId: String, @PrimaryKey val id: Int, val title: String)
