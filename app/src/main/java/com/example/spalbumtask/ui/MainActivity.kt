@@ -1,7 +1,8 @@
-package com.example.spalbumtask
+package com.example.spalbumtask.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.example.spalbumtask.R
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
