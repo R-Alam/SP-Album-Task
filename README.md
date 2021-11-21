@@ -1,6 +1,9 @@
 # SP-Album-Task
 Scottish power
 
+# Description
+* The is a simple application which retrives a list of Album titles from a remote data source , saves in local data source and displayes the sorted list based on the titles on the UI. 
+
 # Libraries used
 *	Retrofit - Retrofit as a REST Client library 
 *	Gson - Gson converter as a Retrofit response mapping library
