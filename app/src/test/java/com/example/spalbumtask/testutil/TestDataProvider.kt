@@ -1,4 +1,4 @@
-package com.example.spalbumtask.testutit
+package com.example.spalbumtask.testutil
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer

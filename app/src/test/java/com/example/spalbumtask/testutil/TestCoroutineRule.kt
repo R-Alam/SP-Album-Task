@@ -1,4 +1,4 @@
-package com.example.spalbumtask.testutit
+package com.example.spalbumtask.testutil
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi

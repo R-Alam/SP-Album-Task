@@ -1,6 +1,7 @@
 package com.example.spalbumtask.ui
 
 import android.util.Log
+import android.view.View
 import androidx.lifecycle.*
 import com.example.spalbumtask.model.Album
 import com.example.spalbumtask.repository.AlbumRepository
@@ -16,6 +17,8 @@ class MainActivityViewModel @Inject constructor(
     private val mainRepository: AlbumRepository): ViewModel(){
     private val _dataState: MutableLiveData<DataState<List<Album>>> = MutableLiveData()
     var errorScreenVisibility = MutableLiveData<Int>()
+    var errorMessage = MutableLiveData<String>()
+    var progressBarVisibility = MutableLiveData<Int>()
 
     val dataState: LiveData<DataState<List<Album>>>
         get() = _dataState

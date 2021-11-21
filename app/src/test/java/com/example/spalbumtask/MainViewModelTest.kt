@@ -1,5 +1,6 @@
 package com.example.spalbumtask
 
+import android.view.View
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
 import app.cash.turbine.test
@@ -7,13 +8,12 @@ import com.example.spalbumtask.model.Album
 import com.example.spalbumtask.remoteservice.AlbumRetrofit
 import com.example.spalbumtask.repository.AlbumRepository
 import com.example.spalbumtask.roomdb.AlbumDao
-import com.example.spalbumtask.testutit.*
+import com.example.spalbumtask.testutil.*
 import com.example.spalbumtask.ui.MainActivityViewModel
 import com.example.spalbumtask.ui.MainStateEvent
 import com.example.spalbumtask.util.DataState
 import junit.framework.TestCase
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import okhttp3.Response
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -23,8 +23,6 @@ import org.mockito.Mock
 import org.mockito.Mockito
 import org.mockito.Mockito.mock
 import org.mockito.junit.MockitoJUnitRunner
-import retrofit2.mock.Calls
-import java.lang.Exception
 
 @RunWith(MockitoJUnitRunner::class)
 class MainViewModelTest {
@@ -79,8 +77,31 @@ class MainViewModelTest {
                 awaitComplete()
             }
 
+
         }
 
     }
+
+
+//    @ExperimentalCoroutinesApi
+//    @Test
+//    fun testViewModel(){
+//        testCoroutineRule.runBlockingTest {
+//
+//            val retrofit = mock(AlbumRetrofit::class.java)
+//            Mockito.`when`(retrofit.get()).thenReturn(retrofit2.Response.success(arrayListOf(Album("1", 1, "Test data"))))
+//            viewModel.setStateEvent(MainStateEvent.GetAlbumEvent)
+////            viewModel.dataState.observeForever(dataStateObserver)
+//
+//            assert(retrofit.get().isSuccessful)
+//            TestCase.assertEquals(retrofit.get().body()?.size, 1)
+//            TestCase.assertEquals(retrofit.get().body()?.get(0)?.id, 1)
+//            when(val dataset = viewModel.dataState.getValueForTest()){
+//                is DataState.Success<List<Album>> -> {
+//                    assert(dataset.data[0].id == 1)
+//                }
+//            }
+//        }
+//    }
 
 }

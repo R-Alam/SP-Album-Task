@@ -58,17 +58,17 @@ class MainActivity  : AppCompatActivity() {
     }
 
     private fun updateUI(albums: List<Album>){
-        Log.d("MainActivity","ESCATEST : Titles  count = " + albums.size)
         viewModel.errorScreenVisibility.value = GONE
         recyclerViewAdapter.submitList(albums)
     }
 
     private fun displayProgressBar(isDisplayed: Boolean){
-//        progress_bar.visibility = if(isDisplayed) View.VISIBLE else View.GONE
+        viewModel.errorScreenVisibility.value = GONE
+        viewModel.progressBarVisibility.value = if(isDisplayed) VISIBLE else GONE
     }
 
     private fun displayError(message: String?){
+        if(message != null) viewModel.errorMessage.value = message else viewModel.errorMessage.value = getString(R.string.generic_message_error)
         viewModel.errorScreenVisibility.value = VISIBLE
-//        if(message != null) viewModel.title = message else viewModel.title = "Unknown error."
     }
 }

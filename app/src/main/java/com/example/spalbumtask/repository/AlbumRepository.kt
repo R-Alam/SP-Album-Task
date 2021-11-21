@@ -18,7 +18,6 @@ class AlbumRepository constructor(
 
     suspend fun getAlbum(): Flow<DataState<List<Album>>> = flow {
         emit(DataState.Loading)
-
         val albumFromDB = albumDao.get()
         if (albumFromDB.isEmpty()) {
             /**
@@ -32,7 +31,6 @@ class AlbumRepository constructor(
                 val sortedAlbum = response.sortedBy { it.title }
                 emit(DataState.Success(sortedAlbum))
             } catch (e: Exception) {
-                Log.d("AlbumRepository", "ESCATEST : Exception  ********* ${e.printStackTrace()}")
                 e.printStackTrace()
                 emit(DataState.Error(e))
             }
