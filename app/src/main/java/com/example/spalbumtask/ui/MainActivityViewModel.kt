@@ -15,6 +15,7 @@ import javax.inject.Inject
 class MainActivityViewModel @Inject constructor(
     private val mainRepository: AlbumRepository): ViewModel(){
     private val _dataState: MutableLiveData<DataState<List<Album>>> = MutableLiveData()
+    var errorScreenVisibility = MutableLiveData<Int>()
 
     val dataState: LiveData<DataState<List<Album>>>
         get() = _dataState

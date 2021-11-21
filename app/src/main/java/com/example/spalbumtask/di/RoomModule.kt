@@ -10,6 +10,14 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
+import android.net.NetworkInfo
+import android.net.ConnectivityManager
+
+
+
+
+
+
 
 @InstallIn(SingletonComponent::class)
 @Module
@@ -32,4 +40,5 @@ object RoomModule {
     fun provideAlbumDao(albumDatabase: AlbumDatabase) : AlbumDao {
         return albumDatabase.getAlbumDao()
     }
+
 }

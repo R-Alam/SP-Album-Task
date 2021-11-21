@@ -10,7 +10,7 @@ import com.example.spalbumtask.model.Album
 interface AlbumDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(vararg album: Album)
+    suspend fun insert(albums: List<Album>)
 
     @Query("SELECT * FROM album")
     suspend fun get():List<Album>

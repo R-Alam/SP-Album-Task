@@ -3,6 +3,9 @@ package com.example.spalbumtask.ui
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import androidx.activity.viewModels
 import androidx.annotation.VisibleForTesting
 import androidx.databinding.DataBindingUtil
@@ -56,6 +59,7 @@ class MainActivity  : AppCompatActivity() {
 
     private fun updateUI(albums: List<Album>){
         Log.d("MainActivity","ESCATEST : Titles  count = " + albums.size)
+        viewModel.errorScreenVisibility.value = GONE
         recyclerViewAdapter.submitList(albums)
     }
 
@@ -64,6 +68,7 @@ class MainActivity  : AppCompatActivity() {
     }
 
     private fun displayError(message: String?){
+        viewModel.errorScreenVisibility.value = VISIBLE
 //        if(message != null) viewModel.title = message else viewModel.title = "Unknown error."
     }
 }
