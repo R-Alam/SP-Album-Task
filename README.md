@@ -2,7 +2,7 @@
 Scottish power
 
 # Description
-* This is a simple application which retrives a list of Album titles from a remote data source , saves in local data source and displayes the sorted list based on the titles on the UI. 
+* This is a simple application that retrieves a list of Album titles from a remote data source, stores them in a local database, and displays the sorted list based on the titles. 
 
 # Libraries used
 *	Retrofit - Retrofit as a REST Client library 
