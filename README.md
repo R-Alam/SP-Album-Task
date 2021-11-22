@@ -32,5 +32,18 @@ Scottish power
 *	Furthermore cosmetics and refactoring is an endless thought.
 *	Navigation component
 
+# Snapshots
+
+* With Internet
+* ![image](https://user-images.githubusercontent.com/92021804/142850293-4b26c3ef-2f4d-4a04-be51-10c09ca4edb1.png)
+
+* Without Internet and DB without data
+* ![image](https://user-images.githubusercontent.com/92021804/142849953-b4f227a7-230e-4a4c-90c1-43c01b6603a3.png)
+
+* Without Internet and saved data in DB
+* ![image](https://user-images.githubusercontent.com/92021804/142850457-bbb4bb80-4352-4915-becb-1214759d0bd3.png)
+
+
+
 
 
