@@ -1,11 +1,17 @@
-package com.example.spalbumtask.ui
+package com.example.spalbumtask
 
 import androidx.lifecycle.Lifecycle
 import androidx.test.core.app.ActivityScenario
 import androidx.test.core.app.launchActivity
+import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.assertion.ViewAssertions.matches
+import androidx.test.espresso.matcher.ViewMatchers
+import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
-import com.example.spalbumtask.model.Album
+import com.example.spalbumtask.ui.MainActivity
+import com.example.spalbumtask.util.DataState
+import com.example.spalbumtask.util.provideTestList
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import com.google.common.truth.Truth.assertThat
@@ -15,6 +21,7 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import java.lang.Exception
 
 @HiltAndroidTest
 @RunWith(AndroidJUnit4::class)
@@ -46,21 +53,28 @@ class MainActivityTest {
     }
 
     @Test
-    fun testViewVisibility(){
+    fun testRecyclerViewSuccess(){
         val scenario = launchActivity<MainActivity>()
-        scenario.onActivity{
-            it.recyclerViewAdapter = AlbumRecyclerViewAdapter()
-            it.recyclerViewAdapter.submitList(getDummyList())
-            assertThat(it.recyclerViewAdapter.itemCount).isGreaterThan(0)
-            assertThat(it.recyclerViewAdapter.currentList[0].id).isEqualTo(1)
+        scenario.onActivity{ activity ->
+            activity.viewModel.dataStateLiveData.value = DataState.Success(provideTestList())
         }
+
+        scenario.moveToState(Lifecycle.State.RESUMED)
+        onView(ViewMatchers.withId(R.id.recycler_albums))
+            .check(matches(hasDescendant(withText("C Title"))))
     }
 
-    private fun getDummyList():List<Album>{
-        val dummyList = arrayListOf<Album>()
-        dummyList.add(Album("1",1,"A Title"))
-        dummyList.add(Album("2",2,"B Title"))
-        dummyList.add(Album("3",3,"C Title"))
-        return dummyList
+    @Test
+    fun testViewVisibility(){
+
+        val scenario = launchActivity<MainActivity>()
+        scenario.moveToState(Lifecycle.State.RESUMED)
+        scenario.onActivity{ activity ->
+            activity.viewModel.dataStateLiveData.value = DataState.Error(Exception("Error"))
+
+        }
+
+        onView(ViewMatchers.withId(R.id.textErrorMessage))
+            .check(matches(withText("Error")))
     }
 }

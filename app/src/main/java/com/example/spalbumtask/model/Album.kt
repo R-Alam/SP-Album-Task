@@ -4,7 +4,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 /**
- * Data class for holding Album details
+ * Data class for holding the Album details
  */
 
 @Entity

@@ -2,12 +2,9 @@ package com.example.spalbumtask.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
-import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import androidx.activity.viewModels
-import androidx.annotation.VisibleForTesting
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import com.example.spalbumtask.R
@@ -19,7 +16,6 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class MainActivity  : AppCompatActivity() {
 
-//    @get:VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
     val viewModel:MainActivityViewModel by viewModels()
     lateinit var dataBinding:ActivityMainBinding
     lateinit var recyclerViewAdapter : AlbumRecyclerViewAdapter
@@ -40,7 +36,7 @@ class MainActivity  : AppCompatActivity() {
     }
 
     private fun subscribeObservers(){
-        viewModel.dataState.observe(this, Observer { dataState ->
+        viewModel.dataStateLiveData.observe(this, Observer { dataState ->
             when(dataState){
                 is DataState.Success<List<Album>> -> {
                     displayProgressBar(false)

@@ -15,7 +15,7 @@ android {
         versionCode 1
         versionName "1.0"
 
-        testInstrumentationRunner "com.example.spalbumtask.MyTestRunner"
+        testInstrumentationRunner "com.example.spalbumtask.util.MyTestRunner"
     }
 
     buildTypes {
@@ -40,7 +40,8 @@ android {
     }
     //added for Instrumentation-unhappy with duplicate dll in path
     packagingOptions {
-        exclude "META-INF/AL2.0"
+        exclude 'META-INF/AL2.0'
+        exclude 'META-INF/LGPL2.1'
     }
 }
 
@@ -56,6 +57,7 @@ dependencies {
 
     // recyclerView
     implementation "androidx.recyclerview:recyclerview:1.2.1"
+    implementation 'androidx.test.espresso:espresso-contrib:3.4.0'
 
     //Hilt
     def hilt_version = "2.40"

@@ -1,9 +1,6 @@
 package com.example.spalbumtask
 
-import android.view.View
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import androidx.lifecycle.Observer
-import app.cash.turbine.test
 import com.example.spalbumtask.model.Album
 import com.example.spalbumtask.remoteservice.AlbumRetrofit
 import com.example.spalbumtask.repository.AlbumRepository
@@ -19,17 +16,17 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.TestRule
 import org.junit.runner.RunWith
-import org.mockito.Mock
 import org.mockito.Mockito
 import org.mockito.Mockito.mock
 import org.mockito.junit.MockitoJUnitRunner
+import retrofit2.Response
 
 @RunWith(MockitoJUnitRunner::class)
 class MainViewModelTest {
-    @Mock
-    private lateinit var dataStateObserver: Observer<DataState<List<Album>>>
+
     private lateinit var viewModel: MainActivityViewModel
-    private var repository = mock(AlbumRepository::class.java)
+    private val retrofit = mock(AlbumRetrofit::class.java)
+    private val albumDao = mock(AlbumDao::class.java)
 
     @get:Rule
     var testRule: TestRule = InstantTaskExecutorRule()
@@ -43,65 +40,57 @@ class MainViewModelTest {
 
     @Before
     fun setUp(){
-//        viewModel = MainActivityViewModel(mock(AlbumRepository::class.java))
-        viewModel = MainActivityViewModel(AlbumRepository(mock(AlbumDao::class.java), mock(AlbumRetrofit::class.java)))
+        viewModel = MainActivityViewModel(AlbumRepository(albumDao, retrofit))
     }
 
     @ExperimentalCoroutinesApi
     @Test
-    fun test_view_model(){
+    fun testWhenDBHasNoData(){
         testCoroutineRule.runBlockingTest {
-            Mockito.`when`(repository.getAlbum()).thenReturn(provideSingleItem())
-            repository.getAlbum().test{
-                when(val expectItem = awaitItem()){
-                    is DataState.Success<List<Album>> -> {
-                        TestCase.assertEquals("Response should have only 1 item", 1, expectItem.data.size);
-                    }
+            Mockito.`when`(retrofit.get()).thenReturn(retrofit2.Response.success(provideMultiItemList()))
+            Mockito.`when`(albumDao.get()).thenReturn(emptyList())
+            viewModel.setStateEvent(MainStateEvent.GetAlbumEvent)
+
+            assert(retrofit.get().isSuccessful)
+            when(val dataset = viewModel.dataStateLiveData.getValueForTest()){
+                is DataState.Success<List<Album>> -> {
+                    assert(dataset.data[0].id == 1)
+                    TestCase.assertEquals(dataset.data.size, 3)
+                    TestCase.assertEquals(dataset.data[1].id, 2)
                 }
-                awaitComplete()
             }
-
-            Mockito.`when`(repository.getAlbum()).thenReturn(provideMultipleItem())
-            repository.getAlbum().test{
-                when(val expectItem = awaitItem()){
-                    is DataState.Success<List<Album>> -> {
-                        TestCase.assertTrue(expectItem.data.size>1)
-                    }
-                }
-                awaitComplete()
-            }
-
-            Mockito.`when`(repository.getAlbum()).thenReturn(provideError())
-            repository.getAlbum().test{
-                TestCase.assertTrue(awaitItem() is DataState.Error)
-                awaitComplete()
-            }
-
-
         }
-
     }
 
+    @ExperimentalCoroutinesApi
+    @Test
+    fun testWhenDBHasData(){
+        testCoroutineRule.runBlockingTest {
+            Mockito.`when`(albumDao.get()).thenReturn(provideMultiItemList())
+            viewModel.setStateEvent(MainStateEvent.GetAlbumEvent)
 
-//    @ExperimentalCoroutinesApi
-//    @Test
-//    fun testViewModel(){
-//        testCoroutineRule.runBlockingTest {
-//
-//            val retrofit = mock(AlbumRetrofit::class.java)
-//            Mockito.`when`(retrofit.get()).thenReturn(retrofit2.Response.success(arrayListOf(Album("1", 1, "Test data"))))
-//            viewModel.setStateEvent(MainStateEvent.GetAlbumEvent)
-////            viewModel.dataState.observeForever(dataStateObserver)
-//
-//            assert(retrofit.get().isSuccessful)
-//            TestCase.assertEquals(retrofit.get().body()?.size, 1)
-//            TestCase.assertEquals(retrofit.get().body()?.get(0)?.id, 1)
-//            when(val dataset = viewModel.dataState.getValueForTest()){
-//                is DataState.Success<List<Album>> -> {
-//                    assert(dataset.data[0].id == 1)
-//                }
-//            }
-//        }
-//    }
+            when(val dataset = viewModel.dataStateLiveData.getValueForTest()){
+                is DataState.Success<List<Album>> -> {
+                    assert(dataset.data[0].id == 1)
+                    TestCase.assertEquals(dataset.data.size, 3)
+                    TestCase.assertEquals(dataset.data[1].id, 2)
+                }
+            }
+        }
+    }
+
+    @ExperimentalCoroutinesApi
+    @Test
+    fun testWhenNoDataWithError(){
+        testCoroutineRule.runBlockingTest {
+            Mockito.`when`(retrofit.get()).thenReturn(Response.success(emptyList()))
+            Mockito.`when`(retrofit.get().isSuccessful).thenReturn(false)
+            Mockito.`when`(albumDao.get()).thenReturn(emptyList())
+            viewModel.setStateEvent(MainStateEvent.GetAlbumEvent)
+
+            val result = viewModel.dataStateLiveData.getValueForTest()
+            TestCase.assertTrue(result is DataState.Error)
+        }
+    }
 
 }

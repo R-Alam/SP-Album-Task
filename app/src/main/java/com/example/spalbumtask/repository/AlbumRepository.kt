@@ -1,15 +1,12 @@
 package com.example.spalbumtask.repository
 
-import android.util.Log
 import com.example.spalbumtask.model.Album
 import com.example.spalbumtask.remoteservice.AlbumRetrofit
 import com.example.spalbumtask.roomdb.AlbumDao
 import com.example.spalbumtask.util.DataState
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import retrofit2.Response
 import java.io.IOException
-import java.lang.Exception
 
 class AlbumRepository constructor(
     private val albumDao: AlbumDao,
@@ -27,11 +24,17 @@ class AlbumRepository constructor(
 
             try {
                 val response = albumRetrofit.get()
-                albumDao.insert(response)
-                val sortedAlbum = response.sortedBy { it.title }
-                emit(DataState.Success(sortedAlbum))
+                if (response.isSuccessful) {
+                    val albumFromRemoteSource = response.body()
+                    albumFromRemoteSource?.let { albumList ->
+                        albumDao.insert(albumList)
+                        val sortedAlbum = albumList.sortedBy { it.title }
+                        emit(DataState.Success(sortedAlbum))
+                    }
+                } else {
+                    emit(DataState.Error(IOException()))
+                }
             } catch (e: Exception) {
-                e.printStackTrace()
                 emit(DataState.Error(e))
             }
 

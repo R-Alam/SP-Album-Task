@@ -28,6 +28,7 @@
             android:visibility="@{viewModel.progressBarVisibility}"
             />
         <TextView
+            android:id="@+id/textErrorMessage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@{viewModel.errorMessage}"

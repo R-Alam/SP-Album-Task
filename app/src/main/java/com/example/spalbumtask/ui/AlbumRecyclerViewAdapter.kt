@@ -1,6 +1,5 @@
 package com.example.spalbumtask.ui
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -9,9 +8,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.spalbumtask.databinding.LayoutListRowBinding
 import com.example.spalbumtask.model.Album
 
+/**
+ * Recycler view adapter for the [Album] item which uses Jetpack's [ListAdapter] instead of [RecyclerView.Adapter]
+ */
 class AlbumRecyclerViewAdapter: ListAdapter<Album, AlbumRecyclerViewAdapter.AlbumViewHolder>(Companion) {
-    private val _tag = AlbumRecyclerViewAdapter::class.java.simpleName
-
     class AlbumViewHolder(val binding:LayoutListRowBinding): RecyclerView.ViewHolder(binding.root)
 
     companion object:DiffUtil.ItemCallback<Album>(){
@@ -28,7 +28,6 @@ class AlbumRecyclerViewAdapter: ListAdapter<Album, AlbumRecyclerViewAdapter.Albu
 
     override fun onBindViewHolder(holder: AlbumViewHolder, position: Int) {
         val albumItem = getItem(position)
-        Log.i(_tag, "Titles = : ${albumItem.title}")
         holder.binding.album = albumItem
         holder.binding.executePendingBindings()
     }

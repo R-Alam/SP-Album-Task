@@ -1,8 +1,8 @@
 package com.example.spalbumtask.ui
 
-import android.util.Log
-import android.view.View
-import androidx.lifecycle.*
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.spalbumtask.model.Album
 import com.example.spalbumtask.repository.AlbumRepository
 import com.example.spalbumtask.util.DataState
@@ -15,29 +15,22 @@ import javax.inject.Inject
 @HiltViewModel
 class MainActivityViewModel @Inject constructor(
     private val mainRepository: AlbumRepository): ViewModel(){
-    private val _dataState: MutableLiveData<DataState<List<Album>>> = MutableLiveData()
     var errorScreenVisibility = MutableLiveData<Int>()
     var errorMessage = MutableLiveData<String>()
     var progressBarVisibility = MutableLiveData<Int>()
+    val dataStateLiveData: MutableLiveData<DataState<List<Album>>> = MutableLiveData()
 
-    val dataState: LiveData<DataState<List<Album>>>
-        get() = _dataState
 
     fun setStateEvent(mainStateEvent: MainStateEvent){
         viewModelScope.launch {
-            when(mainStateEvent){
-                is MainStateEvent.GetAlbumEvent ->{
+            when (mainStateEvent) {
+                is MainStateEvent.GetAlbumEvent -> {
                     mainRepository.getAlbum()
                         .onEach {dataState ->
-                            _dataState.value = dataState
+                            dataStateLiveData.value = dataState
                         }.launchIn(viewModelScope)
                 }
-                else -> {
-
-                    Log.d("MainActivity","ESCATEST : Failed ")
-                }
             }
-
         }
     }
 }

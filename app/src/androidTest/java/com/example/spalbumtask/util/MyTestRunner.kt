@@ -1,4 +1,4 @@
-package com.example.spalbumtask
+package com.example.spalbumtask.util
 
 import android.app.Application
 import android.content.Context

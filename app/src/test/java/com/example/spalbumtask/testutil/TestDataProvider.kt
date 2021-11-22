@@ -23,7 +23,7 @@ fun provideError(): Flow<DataState<List<Album>>> = flow {
 }
 
 fun provideMultiItemList(): List<Album> {
-   return listOf<Album>(Album("1", 1, "TestTitle 1"),Album("3", 3, "TestTitle 3"),Album("2", 2, "TestTitle 2"))
+   return listOf<Album>(Album("1", 1, "ATestTitle 1"),Album("3", 3, "CTestTitle 3"),Album("2", 2, "BTestTitle 2"))
 }
 
 fun <T> LiveData<T>.getValueForTest(): T? {
